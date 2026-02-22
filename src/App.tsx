@@ -4,6 +4,7 @@ import { RegisterPage } from './pages/RegisterPage'
 import { TaskDashboardPage } from './pages/TaskDashboardPage'
 import { SettingsPage } from './pages/SettingsPage'
 import { ProductSearchPage } from './pages/ProductSearchPage'
+import { MultiStepRegistrationPage } from './pages/MultiStepRegistrationPage'
 
 function ProtectedRoute({ children }: { children: React.ReactNode }) {
   const isAuth = sessionStorage.getItem('auth') === 'true'
@@ -19,6 +20,7 @@ function App() {
       <Routes>
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
+        <Route path="/register/multi-step" element={<MultiStepRegistrationPage />} />
         <Route
           path="/dashboard"
           element={

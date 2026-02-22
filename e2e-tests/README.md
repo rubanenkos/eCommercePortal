@@ -17,7 +17,8 @@ e2e-tests/
 │   ├── accessibility.spec.ts # Accessibility tests
 │   ├── responsive.spec.ts # Responsive design tests
 │   ├── errors.spec.ts     # Error handling tests
-│   └── product-search.spec.ts # Product search & filter tests
+│   ├── product-search.spec.ts # Product search & filter tests
+│   └── multi-step-form.spec.ts # Multi-step registration form tests
 ├── playwright.config.ts  # (at project root)
 └── README.md
 ```
@@ -68,6 +69,13 @@ e2e-tests/
 - Sort by different criteria
 - Error handling (query too long)
 - Responsive viewports (mobile, tablet, desktop)
+
+### 8. Multi-step Form (multi-step-form.spec.ts)
+- Field validation (required, format, length)
+- Step navigation (next, previous)
+- Form submission (success and error)
+- Error messages with role="alert"
+- Accessibility (labels, ARIA attributes, aria-invalid)
 
 ## Prerequisites
 
