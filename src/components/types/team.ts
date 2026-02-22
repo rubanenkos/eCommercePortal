@@ -4,4 +4,6 @@ export interface TeamMember {
   avatar: string
   role: string
   status?: 'online' | 'away' | 'offline'
+  /** Optional email for quick contact (mailto) */
+  email?: string
 }

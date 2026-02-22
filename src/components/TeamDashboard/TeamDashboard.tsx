@@ -4,9 +4,11 @@ import { ProjectOverview } from './ProjectOverview'
 import { TeamMembers } from './TeamMembers'
 import { ActivityFeed } from './ActivityFeed'
 import { QuickActions } from './QuickActions'
+import { ProgressCharts } from './ProgressCharts'
 import type { Project } from '../types/project'
 import type { TeamMember } from '../types/team'
 import type { ActivityItem } from '../types/activity'
+import type { ProjectMilestone } from '../types/milestone'
 import type { QuickAction } from './QuickActions'
 
 function ClipboardIcon({ className }: { className?: string }) {
@@ -45,8 +47,10 @@ export interface TeamDashboardProps {
   projects: Project[]
   members: TeamMember[]
   activity: ActivityItem[]
+  milestones?: ProjectMilestone[]
   quickActions?: QuickAction[]
   onProjectClick?: (project: Project) => void
+  onMemberMessage?: (member: TeamMember) => void
 }
 
 const DEFAULT_QUICK_ACTIONS: QuickAction[] = [
@@ -60,8 +64,10 @@ export function TeamDashboard({
   projects,
   members,
   activity,
+  milestones = [],
   quickActions = DEFAULT_QUICK_ACTIONS,
   onProjectClick,
+  onMemberMessage,
 }: TeamDashboardProps) {
 
   const totalTasks = projects.reduce((s, p) => s + (p.taskCount ?? 0), 0)
@@ -132,8 +138,10 @@ export function TeamDashboard({
 
           <ProjectOverview projects={projects} onProjectClick={onProjectClick} />
 
+          <ProgressCharts projects={projects} milestones={milestones} />
+
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            <TeamMembers members={members} maxDisplay={6} />
+            <TeamMembers members={members} maxDisplay={6} onMessage={onMemberMessage} />
             <ActivityFeed activities={activity} maxItems={5} />
           </div>
         </div>

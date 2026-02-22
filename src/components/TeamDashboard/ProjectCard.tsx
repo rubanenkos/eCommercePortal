@@ -1,6 +1,20 @@
 import { Card } from '../shared/Card'
 import { Badge } from '../shared/Badge'
-import type { Project } from '../types/project'
+import type { Project, ProjectTrend } from '../types/project'
+
+function TrendIndicator({ trend, value }: { trend: ProjectTrend; value?: number }) {
+  const config = {
+    up: { icon: '↑', color: 'text-emerald-600 dark:text-emerald-400', label: 'Up' },
+    down: { icon: '↓', color: 'text-red-600 dark:text-red-400', label: 'Down' },
+    stable: { icon: '→', color: 'text-gray-500 dark:text-gray-400', label: 'Stable' },
+  }[trend]
+  return (
+    <span className={`inline-flex items-center text-xs font-medium ${config.color}`} title={config.label}>
+      {config.icon}
+      {value != null && <span className="ml-0.5">{value > 0 ? `+${value}` : value}%</span>}
+    </span>
+  )
+}
 
 export interface ProjectCardProps {
   project: Project
@@ -36,7 +50,12 @@ export function ProjectCard({ project, onClick }: ProjectCardProps) {
           </div>
         </div>
         <div className="shrink-0 text-right">
-          <span className="text-2xl font-bold text-gray-900 dark:text-white">{project.progress}%</span>
+          <div className="flex items-center justify-end gap-1.5">
+            <span className="text-2xl font-bold text-gray-900 dark:text-white">{project.progress}%</span>
+            {project.trend && (
+              <TrendIndicator trend={project.trend} value={project.trendValue} />
+            )}
+          </div>
           <p className="text-xs text-gray-500 dark:text-gray-400">complete</p>
         </div>
       </div>
