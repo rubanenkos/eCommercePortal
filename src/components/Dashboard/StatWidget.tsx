@@ -24,7 +24,7 @@ export function StatWidget({
 
   return (
     <div
-      className="rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 p-5 shadow-sm transition-colors duration-300 relative"
+      className="rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 p-5 shadow-sm transition-colors duration-300 relative min-h-[120px]"
       role="article"
       aria-label={`${label}: ${value}${live ? ', live' : ''}`}
     >
@@ -37,7 +37,7 @@ export function StatWidget({
           Live
         </span>
       )}
-      <div className="flex items-start justify-between">
+      <div className="flex flex-col h-full">
         <div>
           <p className="text-sm font-medium text-gray-500 dark:text-gray-300">
             {label}
@@ -54,8 +54,10 @@ export function StatWidget({
           )}
         </div>
         {icon && (
-          <div className="rounded-lg bg-gray-100 dark:bg-gray-700 p-2 text-gray-600 dark:text-gray-300">
-            {icon}
+          <div className="mt-auto flex justify-end">
+            <div className="rounded-lg bg-gray-100 dark:bg-gray-700 p-2 text-gray-600 dark:text-gray-300">
+              {icon}
+            </div>
           </div>
         )}
       </div>
