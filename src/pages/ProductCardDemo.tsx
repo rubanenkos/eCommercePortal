@@ -1,4 +1,4 @@
-import { ProductCard } from '../components'
+import { ProductCard, Navbar } from '../components'
 
 const SAMPLE_PRODUCTS = [
   {
@@ -63,18 +63,36 @@ const SAMPLE_PRODUCTS = [
 export function ProductCardDemo() {
   return (
     <div className="min-h-screen bg-gray-950">
-      <header className="border-b border-gray-800 bg-gray-900/50 backdrop-blur-sm sticky top-0 z-10">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-          <h1 className="text-2xl sm:text-3xl font-bold text-white">
-            Product Catalog
-          </h1>
-          <p className="mt-2 text-gray-400 text-sm sm:text-base">
-            E-commerce product cards with hover effects
-          </p>
-        </div>
-      </header>
+      <Navbar
+        logo={<span className="text-blue-400">Portal</span>}
+        menuItems={[
+          { label: 'Home', href: '#' },
+          { label: 'Products', href: '#' },
+          { label: 'Categories', href: '#' },
+          { label: 'Deals', href: '#' },
+        ]}
+        searchPlaceholder="Search products..."
+        onSearch={(query) => alert(`Searching for: ${query}`)}
+        user={{
+          name: 'Alex Johnson',
+          avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Alex',
+          email: 'alex@example.com',
+        }}
+        userMenuItems={[
+          { label: 'My Account', href: '#' },
+          { label: 'Orders', href: '#' },
+          { divider: true },
+          { label: 'Sign out', onClick: () => alert('Signed out!') },
+        ]}
+      />
 
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <h1 className="text-2xl sm:text-3xl font-bold text-white mb-2">
+          Product Catalog
+        </h1>
+        <p className="text-gray-400 mb-8">
+          E-commerce product cards with hover effects
+        </p>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {SAMPLE_PRODUCTS.map((product) => (
             <ProductCard
