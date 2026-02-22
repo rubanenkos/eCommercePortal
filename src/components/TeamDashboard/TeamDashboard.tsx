@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom'
+import { DarkModeToggle } from '../Dashboard/DarkModeToggle'
 import { MetricCard } from './MetricCard'
 import { ProjectOverview } from './ProjectOverview'
 import { TeamMembers } from './TeamMembers'
@@ -10,6 +11,7 @@ import type { TeamMember } from '../types/team'
 import type { ActivityItem } from '../types/activity'
 import type { ProjectMilestone } from '../types/milestone'
 import type { QuickAction } from './QuickActions'
+import type { Task } from '../types/dashboard'
 
 function ClipboardIcon({ className }: { className?: string }) {
   return (
@@ -48,6 +50,8 @@ export interface TeamDashboardProps {
   members: TeamMember[]
   activity: ActivityItem[]
   milestones?: ProjectMilestone[]
+  /** When provided, metrics and progress chart use tasks (from Task Dashboard) */
+  tasks?: Task[]
   quickActions?: QuickAction[]
   onProjectClick?: (project: Project) => void
   onMemberMessage?: (member: TeamMember) => void
@@ -65,14 +69,15 @@ export function TeamDashboard({
   members,
   activity,
   milestones = [],
+  tasks,
   quickActions = DEFAULT_QUICK_ACTIONS,
   onProjectClick,
   onMemberMessage,
 }: TeamDashboardProps) {
-
-  const totalTasks = projects.reduce((s, p) => s + (p.taskCount ?? 0), 0)
-  const completedTasks = projects.reduce((s, p) => s + (p.completedTasks ?? 0), 0)
-  const inProgressTasks = Math.max(0, Math.floor(totalTasks * 0.3))
+  const fromTasks = tasks != null && tasks.length > 0
+  const totalTasks = fromTasks ? tasks!.length : projects.reduce((s, p) => s + (p.taskCount ?? 0), 0)
+  const completedTasks = fromTasks ? tasks!.filter((t) => t.status === 'done').length : projects.reduce((s, p) => s + (p.completedTasks ?? 0), 0)
+  const inProgressTasks = fromTasks ? tasks!.filter((t) => t.status === 'in_progress').length : Math.max(0, Math.floor(totalTasks * 0.3))
   const activeProjects = projects.filter((p) => p.status === 'active').length
   const completedProjects = projects.filter((p) => p.status === 'completed').length
   const onlineMembers = members.filter((m) => m.status === 'online').length
@@ -80,16 +85,19 @@ export function TeamDashboard({
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-950 transition-colors duration-300">
       <nav className="border-b border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 px-4 sm:px-6 lg:px-8">
-        <div className="flex h-14 items-center gap-6">
-          <Link to="/dashboard" className="text-sm font-medium text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white">
-            Tasks
-          </Link>
-          <Link to="/team" className="text-sm font-medium text-blue-600 dark:text-blue-400">
-            Team
-          </Link>
-          <Link to="/settings" className="text-sm font-medium text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white">
-            Settings
-          </Link>
+        <div className="flex h-14 items-center justify-between gap-6">
+          <div className="flex items-center gap-6">
+            <Link to="/dashboard" className="text-sm font-medium text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white">
+              Tasks
+            </Link>
+            <Link to="/team" className="text-sm font-medium text-blue-600 dark:text-blue-400">
+              Team
+            </Link>
+            <Link to="/settings" className="text-sm font-medium text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white">
+              Settings
+            </Link>
+          </div>
+          <DarkModeToggle />
         </div>
       </nav>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
@@ -138,7 +146,7 @@ export function TeamDashboard({
 
           <ProjectOverview projects={projects} onProjectClick={onProjectClick} />
 
-          <ProgressCharts projects={projects} milestones={milestones} />
+          <ProgressCharts projects={projects} milestones={milestones} tasks={tasks} />
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             <TeamMembers members={members} maxDisplay={6} onMessage={onMemberMessage} />

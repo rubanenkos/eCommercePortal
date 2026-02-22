@@ -1,43 +1,35 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Dashboard, Button } from '../components'
+import { useUser } from '../contexts/UserContext'
+import { useTasks } from '../contexts/TasksContext'
 import type { Task } from '../components/types/dashboard'
-
-const INITIAL_TASKS: Task[] = [
-  { id: '1', title: 'Review project proposal', description: 'Check the Q4 budget', status: 'in_progress', priority: 'high', dueDate: 'Feb 25' },
-  { id: '2', title: 'Update documentation', description: 'Add API changes', status: 'todo', priority: 'medium', dueDate: 'Feb 28' },
-  { id: '3', title: 'Team standup prep', description: 'Prepare agenda', status: 'done', priority: 'low', dueDate: 'Feb 22' },
-  { id: '4', title: 'Fix login bug', description: 'Session timeout on mobile', status: 'in_progress', priority: 'high', dueDate: 'Feb 24' },
-]
 
 export function TaskDashboardPage() {
   const navigate = useNavigate()
-  const [tasks, setTasks] = useState<Task[]>(INITIAL_TASKS)
+  const { user, logout } = useUser()
+  const { tasks, updateTaskStatus, addTask, deleteTask } = useTasks()
   const [searchQuery, setSearchQuery] = useState('')
   const [statusFilter, setStatusFilter] = useState<string>('all')
   const [newTaskTitle, setNewTaskTitle] = useState('')
 
   const handleStatusChange = (taskId: string, status: Task['status']) => {
-    setTasks((prev) => prev.map((t) => (t.id === taskId ? { ...t, status } : t)))
+    updateTaskStatus(taskId, status)
   }
 
   const handleDeleteTask = (taskId: string) => {
-    setTasks((prev) => prev.filter((t) => t.id !== taskId))
+    deleteTask(taskId)
   }
 
   const handleAddTask = (e: React.FormEvent) => {
     e.preventDefault()
     if (!newTaskTitle.trim()) return
-    setTasks((prev) => [
-      ...prev,
-      { id: String(Date.now()), title: newTaskTitle.trim(), status: 'todo' },
-    ])
+    addTask({ title: newTaskTitle.trim(), status: 'todo' })
     setNewTaskTitle('')
   }
 
   const handleLogout = () => {
-    sessionStorage.removeItem('auth')
-    sessionStorage.removeItem('user')
+    logout()
     navigate('/login')
   }
 
@@ -51,7 +43,7 @@ export function TaskDashboardPage() {
     <Dashboard
       title="Task Dashboard"
       subtitle="Manage your tasks"
-      user={{
+      user={user ?? {
         name: 'Test User',
         avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Test',
         email: 'test@example.com',

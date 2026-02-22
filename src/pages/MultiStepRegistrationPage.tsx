@@ -1,12 +1,14 @@
 import { useState } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
 import { Button } from '../components'
+import { useUser } from '../contexts/UserContext'
 
 const STEPS = ['Personal Info', 'Account Security', 'Review & Submit'] as const
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 
 export function MultiStepRegistrationPage() {
   const navigate = useNavigate()
+  const { login } = useUser()
   const [step, setStep] = useState(0)
   const [formData, setFormData] = useState({
     name: '',
@@ -98,8 +100,11 @@ export function MultiStepRegistrationPage() {
         }, 500)
       })
 
-      sessionStorage.setItem('auth', 'true')
-      sessionStorage.setItem('user', JSON.stringify({ email: formData.email, name: formData.name }))
+      login({
+        name: formData.name,
+        avatar: `https://api.dicebear.com/7.x/avataaars/svg?seed=${encodeURIComponent(formData.name)}`,
+        email: formData.email,
+      })
       setIsSuccess(true)
       setTimeout(() => navigate('/dashboard'), 1500)
     } catch (err) {

@@ -1,3 +1,5 @@
+import { Link } from 'react-router-dom'
+
 export type QuickActionVariant = 'blue' | 'green' | 'purple' | 'orange'
 
 export interface QuickAction {
@@ -79,9 +81,9 @@ export function QuickActions({ actions }: QuickActionsProps) {
 
           if (action.href) {
             return (
-              <a key={action.id} href={action.href} className={className}>
+              <Link key={action.id} to={action.href} className={className}>
                 {content}
-              </a>
+              </Link>
             )
           }
           return (

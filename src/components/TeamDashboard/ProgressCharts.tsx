@@ -2,19 +2,30 @@ import { Card } from '../shared/Card'
 import { ProgressChart } from './ProgressChart'
 import type { Project } from '../types/project'
 import type { ProjectMilestone } from '../types/milestone'
+import type { Task } from '../types/dashboard'
 
 export interface ProgressChartsProps {
   projects: Project[]
   milestones: ProjectMilestone[]
+  /** When provided, stats and progress chart use tasks instead of projects */
+  tasks?: Task[]
 }
 
-export function ProgressCharts({ projects, milestones }: ProgressChartsProps) {
-  const totalTasks = projects.reduce((s, p) => s + (p.taskCount ?? 0), 0)
-  const completedTasks = projects.reduce((s, p) => s + (p.completedTasks ?? 0), 0)
-  const overdueTasks = projects.reduce((s, p) => s + (p.overdueTasks ?? 0), 0)
-  const remaining = Math.max(0, totalTasks - completedTasks - overdueTasks)
-  const inProgressTasks = Math.min(Math.max(0, Math.floor(remaining * 0.7)), remaining)
-  const todoTasks = Math.max(0, remaining - inProgressTasks)
+export function ProgressCharts({ projects, milestones, tasks }: ProgressChartsProps) {
+  const fromTasks = tasks != null && tasks.length > 0
+  const totalTasks = fromTasks
+    ? tasks!.length
+    : projects.reduce((s, p) => s + (p.taskCount ?? 0), 0)
+  const completedTasks = fromTasks
+    ? tasks!.filter((t) => t.status === 'done').length
+    : projects.reduce((s, p) => s + (p.completedTasks ?? 0), 0)
+  const inProgressTasks = fromTasks
+    ? tasks!.filter((t) => t.status === 'in_progress').length
+    : Math.min(Math.max(0, Math.floor((totalTasks - completedTasks) * 0.7)), Math.max(0, totalTasks - completedTasks))
+  const overdueTasks = fromTasks ? 0 : projects.reduce((s, p) => s + (p.overdueTasks ?? 0), 0)
+  const todoTasks = fromTasks
+    ? tasks!.filter((t) => t.status === 'todo').length
+    : Math.max(0, totalTasks - completedTasks - inProgressTasks - overdueTasks)
 
   const taskData = [
     { label: 'Todo', value: todoTasks },

@@ -1,7 +1,8 @@
 import { TeamDashboard } from '../components/TeamDashboard/TeamDashboard'
+import { useTasks } from '../contexts/TasksContext'
+import { useActivity } from '../contexts/ActivityContext'
+import { useTeam } from '../contexts/TeamContext'
 import type { Project } from '../components/types/project'
-import type { TeamMember } from '../components/types/team'
-import type { ActivityItem } from '../components/types/activity'
 import type { ProjectMilestone } from '../components/types/milestone'
 
 const now = Date.now()
@@ -10,14 +11,6 @@ const MOCK_PROJECTS: Project[] = [
   { id: '2', name: 'Mobile App', description: 'iOS and Android app development', progress: 30, status: 'active', dueDate: 'Apr 30', taskCount: 45, completedTasks: 14, overdueTasks: 3, trend: 'up', trendValue: 5, lastUpdated: '15 min ago', lastUpdatedAt: now - 900_000 },
   { id: '3', name: 'API Integration', description: 'Third-party API integrations', progress: 100, status: 'completed', dueDate: 'Feb 10', taskCount: 8, completedTasks: 8, trend: 'stable', lastUpdated: '1 hour ago', lastUpdatedAt: now - 3_600_000 },
   { id: '4', name: 'Q4 Marketing', description: 'Campaign planning and execution', progress: 15, status: 'on_hold', dueDate: 'May 1', taskCount: 12, completedTasks: 2, trend: 'down', trendValue: 3, lastUpdated: '2 hours ago', lastUpdatedAt: now - 7_200_000 },
-]
-
-const MOCK_MEMBERS: TeamMember[] = [
-  { id: '1', name: 'Alex Johnson', avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Alex', role: 'Lead', status: 'online', email: 'alex@example.com' },
-  { id: '2', name: 'Sam Wilson', avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Sam', role: 'Developer', status: 'online', email: 'sam@example.com' },
-  { id: '3', name: 'Jordan Lee', avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Jordan', role: 'Designer', status: 'away', email: 'jordan@example.com' },
-  { id: '4', name: 'Casey Brown', avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Casey', role: 'QA', status: 'offline', email: 'casey@example.com' },
-  { id: '5', name: 'Morgan Taylor', avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Morgan', role: 'PM', status: 'online', email: 'morgan@example.com' },
 ]
 
 const MOCK_MILESTONES: ProjectMilestone[] = [
@@ -29,21 +22,34 @@ const MOCK_MILESTONES: ProjectMilestone[] = [
   { id: 'm6', name: 'Sprint Planning', projectId: '4', projectName: 'Q4 Marketing', date: 'Feb 20', dateSort: '2025-02-20', status: 'overdue' },
 ]
 
-const MOCK_ACTIVITY: ActivityItem[] = [
-  { id: '1', type: 'task_completed', user: 'Alex Johnson', userAvatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Alex', message: 'completed Homepage layout', timestamp: '2 min ago', projectId: '1' },
-  { id: '2', type: 'task_created', user: 'Sam Wilson', userAvatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Sam', message: 'created API auth flow', timestamp: '15 min ago', projectId: '2' },
-  { id: '3', type: 'comment', user: 'Jordan Lee', userAvatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Jordan', message: 'commented on Design system', timestamp: '1 hour ago', projectId: '1' },
-  { id: '4', type: 'member_joined', user: 'Morgan Taylor', message: 'joined the project', timestamp: '2 hours ago', projectId: '2' },
-  { id: '5', type: 'file_uploaded', user: 'Casey Brown', userAvatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Casey', message: 'uploaded test report', timestamp: '3 hours ago', projectId: '1' },
-]
-
 export function TeamDashboardPage() {
+  const { tasks } = useTasks()
+  const { activity } = useActivity()
+  const { members, addMember } = useTeam()
+  const handleInviteMember = () => {
+    const name = `New Member ${members.length + 1}`
+    addMember({
+      name,
+      avatar: `https://api.dicebear.com/7.x/avataaars/svg?seed=${encodeURIComponent(name)}`,
+      role: 'Member',
+      status: 'offline',
+      email: `member${members.length + 1}@example.com`,
+    })
+  }
+
   return (
     <TeamDashboard
       projects={MOCK_PROJECTS}
-      members={MOCK_MEMBERS}
-      activity={MOCK_ACTIVITY}
+      members={members}
+      activity={activity}
+      tasks={tasks}
       milestones={MOCK_MILESTONES}
+      quickActions={[
+        { id: 'new-task', label: 'New Task', icon: 'add', variant: 'blue', onClick: () => {}, href: '/dashboard' },
+        { id: 'new-project', label: 'New Project', icon: 'folder', variant: 'green', onClick: () => {} },
+        { id: 'invite', label: 'Invite Member', icon: 'people', variant: 'purple', onClick: handleInviteMember },
+        { id: 'upload', label: 'Upload File', icon: 'upload', variant: 'orange', onClick: () => {} },
+      ]}
       onProjectClick={(project) => console.log('Project clicked:', project.name)}
       onMemberMessage={(member) => console.log('Message:', member.name)}
     />

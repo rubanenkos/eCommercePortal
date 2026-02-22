@@ -1,15 +1,7 @@
 import { useEffect, useState } from 'react'
+import { useThemeOptional } from '../../contexts/ThemeContext'
 
 const STORAGE_KEY = 'portal-theme'
-
-function applyTheme(isDark: boolean) {
-  const root = document.documentElement
-  if (isDark) {
-    root.classList.add('dark')
-  } else {
-    root.classList.remove('dark')
-  }
-}
 
 export interface DarkModeToggleProps {
   /** Controlled mode - when provided, component acts as controlled */
@@ -25,39 +17,33 @@ export function DarkModeToggle({
   onToggle,
   className = '',
 }: DarkModeToggleProps) {
-  const [internalIsDark, setInternalIsDark] = useState(() => {
-    if (typeof document !== 'undefined') {
-      return document.documentElement.classList.contains('dark')
-    }
-    return false
+  const themeContext = useThemeOptional()
+  const [fallbackDark, setFallbackDark] = useState(() => {
+    if (typeof window === 'undefined') return false
+    try {
+      return localStorage.getItem(STORAGE_KEY) === 'dark'
+    } catch { return false }
   })
 
-  const isDark = controlledIsDark ?? internalIsDark
+  const isDark = controlledIsDark ?? themeContext?.isDark ?? fallbackDark
 
   useEffect(() => {
-    applyTheme(isDark)
+    const root = document.documentElement
+    if (isDark) root.classList.add('dark')
+    else root.classList.remove('dark')
   }, [isDark])
 
-
   useEffect(() => {
-    if (controlledIsDark !== undefined) return
-
-    try {
-      localStorage.setItem(STORAGE_KEY, internalIsDark ? 'dark' : 'light')
-    } catch {
-      /* ignore */
-    }
-  }, [internalIsDark, controlledIsDark])
+    if (themeContext || controlledIsDark !== undefined) return
+    try { localStorage.setItem(STORAGE_KEY, fallbackDark ? 'dark' : 'light') } catch { /* ignore */ }
+  }, [fallbackDark, themeContext, controlledIsDark])
 
   const handleClick = () => {
     const next = !isDark
-    if (controlledIsDark === undefined) {
-      setInternalIsDark(next)
-      try {
-        localStorage.setItem(STORAGE_KEY, next ? 'dark' : 'light')
-      } catch {
-        /* ignore */
-      }
+    if (themeContext) {
+      themeContext.setTheme(next ? 'dark' : 'light')
+    } else if (controlledIsDark === undefined) {
+      setFallbackDark(next)
     }
     onToggle?.(next)
   }

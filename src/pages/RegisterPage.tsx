@@ -1,9 +1,11 @@
 import { useState } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
 import { Button } from '../components'
+import { useUser } from '../contexts/UserContext'
 
 export function RegisterPage() {
   const navigate = useNavigate()
+  const { login } = useUser()
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -20,8 +22,11 @@ export function RegisterPage() {
       setError('Password must be at least 8 characters')
       return
     }
-    sessionStorage.setItem('auth', 'true')
-    sessionStorage.setItem('user', JSON.stringify({ email, name }))
+    login({
+      name,
+      avatar: `https://api.dicebear.com/7.x/avataaars/svg?seed=${encodeURIComponent(name)}`,
+      email,
+    })
     navigate('/dashboard')
   }
 

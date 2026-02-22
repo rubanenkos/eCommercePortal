@@ -1,9 +1,11 @@
 import { useState } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
 import { Button } from '../components'
+import { useUser } from '../contexts/UserContext'
 
 export function LoginPage() {
   const navigate = useNavigate()
+  const { login } = useUser()
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
@@ -16,8 +18,11 @@ export function LoginPage() {
       return
     }
     if (email === 'test@example.com' && password === 'TestPassword123!') {
-      sessionStorage.setItem('auth', 'true')
-      sessionStorage.setItem('user', JSON.stringify({ email, name: 'Test User' }))
+      login({
+        name: 'Test User',
+        avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Test',
+        email,
+      })
       navigate('/dashboard')
     } else {
       setError('Invalid email or password')
