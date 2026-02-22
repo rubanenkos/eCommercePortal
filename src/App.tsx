@@ -1,7 +1,7 @@
-import { SettingsPage } from './pages/SettingsPage'
+import { AnalyticsDashboard } from './components'
 
 function App() {
-  return <SettingsPage />
+  return <AnalyticsDashboard />
 }
 
 export default App
