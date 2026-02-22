@@ -22,9 +22,9 @@ A comprehensive project management and collaboration portal built with React, Ty
 ## Features
 
 ### Authentication
-- **Login** – Sign in with email and password
+- **Login** – Sign in with email and password (redirects to Team dashboard)
 - **Registration** – Simple and multi-step registration flows
-- **Protected routes** – Dashboard, Team, Board, Feed, and Settings require authentication
+- **Protected routes** – Team, Dashboard (Tasks), Board, Feed, and Settings require authentication
 - **Session persistence** – User state stored in sessionStorage
 
 ### Task Dashboard
@@ -72,6 +72,7 @@ A comprehensive project management and collaboration portal built with React, Ty
 - **Appearance** – Theme (light/dark/system)
 
 ### Global
+- **Header navigation** – Top nav (Team, Board, Tasks, Feed) with user menu (Settings, Profile, Sign out)
 - **Dark mode** – Theme toggle with persistence (localStorage)
 - **Responsive design** – Mobile, tablet, desktop
 - **Tailwind CSS** – Utility-first styling
@@ -178,7 +179,8 @@ E2E tests start the dev server automatically. Ensure no other process is using p
 Portal/
 ├── src/
 │   ├── components/          # Reusable UI components
-│   │   ├── Dashboard/      # Task dashboard, sidebar, header
+│   │   ├── layout/          # AppHeader (top nav, user menu)
+│   │   ├── Dashboard/       # Task dashboard, TaskCard, StatWidget, HeaderActions
 │   │   ├── TeamDashboard/   # Team metrics, projects, members, activity
 │   │   ├── kanban/          # Kanban board, columns, task cards
 │   │   ├── feed/            # Social feed, posts, comments
@@ -210,15 +212,15 @@ Portal/
 
 | Path | Description | Auth |
 |------|-------------|------|
-| `/` | Redirects to `/dashboard` | - |
+| `/` | Redirects to `/team` | - |
 | `/login` | Login page | Public |
 | `/register` | Registration page | Public |
 | `/register/multi-step` | Multi-step registration | Public |
+| `/team` | Team dashboard (default after login) | Protected |
 | `/dashboard` | Task dashboard | Protected |
-| `/team` | Team dashboard | Protected |
 | `/board` | Kanban board | Protected |
 | `/feed` | Social feed | Protected |
-| `/settings` | Settings page | Protected |
+| `/settings` | Settings page (via user menu) | Protected |
 | `/products` | Product search | Public |
 
 ---
@@ -247,7 +249,7 @@ Tests cover:
 
 - **Authentication** – Login, registration, logout, session
 - **Tasks** – Create, edit status, delete, filter, search
-- **Navigation** – Routes, user menu, back button
+- **Navigation** – Routes, user menu (Settings), back button
 - **Accessibility** – Keyboard nav, ARIA, labels
 - **Responsive** – Mobile, tablet, desktop viewports
 - **Errors** – Invalid login, validation, protected routes
@@ -257,8 +259,14 @@ Tests cover:
 ### Running Tests
 
 ```bash
+# Install Playwright browsers (first time only)
+npx playwright install
+
 # All tests
 npm run test:e2e
+
+# Re-run only failed tests from last run
+npx playwright test --last-failed
 
 # Specific file
 npx playwright test e2e-tests/tests/auth.spec.ts
