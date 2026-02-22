@@ -1,7 +1,7 @@
-import { UserProfileDemo } from './pages/UserProfileDemo'
+import { ProductCardDemo } from './pages/ProductCardDemo'
 
 function App() {
-  return <UserProfileDemo />
+  return <ProductCardDemo />
 }
 
 export default App
