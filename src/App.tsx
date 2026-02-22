@@ -1,7 +1,7 @@
-import { DashboardPage } from './pages/DashboardPage'
+import { SettingsPage } from './pages/SettingsPage'
 
 function App() {
-  return <DashboardPage />
+  return <SettingsPage />
 }
 
 export default App
