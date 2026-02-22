@@ -50,10 +50,10 @@ export interface TeamDashboardProps {
 }
 
 const DEFAULT_QUICK_ACTIONS: QuickAction[] = [
-  { id: 'add-task', label: 'Add Task', icon: 'task', onClick: () => {} },
-  { id: 'new-project', label: 'New Project', icon: 'add', onClick: () => {} },
-  { id: 'invite', label: 'Invite Member', icon: 'user', onClick: () => {} },
-  { id: 'reports', label: 'Reports', icon: 'chart', onClick: () => {} },
+  { id: 'new-task', label: 'New Task', icon: 'add', variant: 'blue', onClick: () => {} },
+  { id: 'new-project', label: 'New Project', icon: 'folder', variant: 'green', onClick: () => {} },
+  { id: 'invite', label: 'Invite Member', icon: 'people', variant: 'purple', onClick: () => {} },
+  { id: 'upload', label: 'Upload File', icon: 'upload', variant: 'orange', onClick: () => {} },
 ]
 
 export function TeamDashboard({
@@ -130,16 +130,12 @@ export function TeamDashboard({
 
           <QuickActions actions={quickActions} />
 
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-            <div className="lg:col-span-2">
-              <ProjectOverview projects={projects} onProjectClick={onProjectClick} />
-            </div>
-            <div>
-              <TeamMembers members={members} maxDisplay={6} />
-            </div>
-          </div>
+          <ProjectOverview projects={projects} onProjectClick={onProjectClick} />
 
-          <ActivityFeed activities={activity} maxItems={5} />
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <TeamMembers members={members} maxDisplay={6} />
+            <ActivityFeed activities={activity} maxItems={5} />
+          </div>
         </div>
       </div>
     </div>
