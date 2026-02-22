@@ -23,6 +23,7 @@ export function TaskCard({ task, onDragStart, onDragEnd, onClick }: TaskCardProp
       onClick={(e) => { if (!(e.target as HTMLElement).closest('button')) onClick?.(task) }}
       role="button"
       tabIndex={0}
+      aria-label={`Task: ${task.title}${task.assignee ? `, assigned to ${task.assignee.name}` : ''}. Click to edit, drag to move.`}
       onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') onClick?.(task) }}
       onDragStart={(e) => {
         e.dataTransfer.setData('application/json', JSON.stringify({ taskId: task.id, fromStatus: task.status }))

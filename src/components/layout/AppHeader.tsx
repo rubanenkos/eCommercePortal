@@ -12,7 +12,7 @@ const DEFAULT_NOTIFICATIONS: HeaderActionsNotification[] = [
 
 function MenuIcon() {
   return (
-    <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
     </svg>
   )
@@ -20,7 +20,7 @@ function MenuIcon() {
 
 function CloseIcon() {
   return (
-    <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
     </svg>
   )
@@ -59,6 +59,12 @@ export function AppHeader({
 
   return (
     <>
+      <a
+        href="#main-content"
+        className="fixed top-0 left-4 -translate-y-full focus:translate-y-0 focus:top-4 focus:z-[100] px-4 py-2 bg-blue-600 text-white rounded-lg no-underline transition-all focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-blue-600"
+      >
+        Skip to main content
+      </a>
       {/* Mobile menu backdrop */}
       {mobileMenuOpen && (
         <button

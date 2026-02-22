@@ -30,6 +30,8 @@ export function BoardColumn({
 }: BoardColumnProps) {
   return (
     <div
+      role="group"
+      aria-label={`${title} column, ${tasks.length} ${tasks.length === 1 ? 'task' : 'tasks'}`}
       className={`flex flex-col w-72 shrink-0 rounded-xl border border-gray-200 dark:border-gray-700 ${columnBgClasses[id]}`}
       onDragOver={(e) => {
         e.preventDefault()

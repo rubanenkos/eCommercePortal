@@ -150,12 +150,14 @@ export function EditTaskModal({ isOpen, task, assignees, onClose, onSave }: Edit
               type="button"
               onClick={onClose}
               className="px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors"
+              aria-label="Cancel and close"
             >
               Cancel
             </button>
             <button
               type="submit"
               className="px-4 py-2 text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 rounded-lg transition-colors"
+              aria-label="Save changes"
             >
               Save Changes
             </button>

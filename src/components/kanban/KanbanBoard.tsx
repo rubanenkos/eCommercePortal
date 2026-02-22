@@ -123,7 +123,7 @@ export function KanbanBoard() {
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-950 transition-colors duration-300">
-      <div className="p-4 sm:p-6 space-y-4">
+      <main id="main-content" className="p-4 sm:p-6 space-y-4">
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
           <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
             Project Board
@@ -132,6 +132,7 @@ export function KanbanBoard() {
             type="button"
             onClick={() => setIsAddModalOpen(true)}
             className="inline-flex items-center justify-center px-4 py-2 text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 rounded-lg transition-colors"
+            aria-label="Add new task"
           >
             Add Task
           </button>
@@ -184,7 +185,7 @@ export function KanbanBoard() {
             />
           ))}
         </div>
-      </div>
+      </main>
 
       <AddTaskModal
         isOpen={isAddModalOpen}

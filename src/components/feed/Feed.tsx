@@ -28,7 +28,7 @@ export function Feed({
   }, [])
 
   return (
-    <div className="max-w-2xl mx-auto space-y-4 py-6">
+    <main id="main-content" className="max-w-2xl mx-auto space-y-4 py-6">
       <CreatePost currentUser={currentUser} onSubmit={onCreatePost} />
       <div className="space-y-4">
         {posts.map((post) => (
@@ -48,10 +48,12 @@ export function Feed({
           onClick={handleLoadMore}
           disabled={isLoadingMore}
           className="px-6 py-3 text-sm font-medium text-gray-600 dark:text-gray-400 bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+          aria-label={isLoadingMore ? 'Loading more posts' : 'Load more posts'}
+          aria-busy={isLoadingMore}
         >
           {isLoadingMore ? 'Loading...' : 'Load more'}
         </button>
       </div>
-    </div>
+    </main>
   )
 }

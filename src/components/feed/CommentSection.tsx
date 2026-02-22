@@ -37,6 +37,7 @@ export function CommentSection({ comments, currentUser, onAddComment, onLikeComm
           type="submit"
           disabled={!newComment.trim()}
           className="px-3 py-2 text-sm font-medium text-blue-600 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-900/30 disabled:opacity-50 disabled:cursor-not-allowed rounded-lg transition-colors"
+          aria-label="Submit comment"
         >
           Reply
         </button>
@@ -59,6 +60,7 @@ export function CommentSection({ comments, currentUser, onAddComment, onLikeComm
                   type="button"
                   className="mt-1 text-xs text-gray-500 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400"
                   onClick={() => onLikeComment?.(comment.id)}
+                  aria-label={`Like comment by ${comment.user.name}`}
                 >
                   {comment.likes} like{comment.likes !== 1 ? 's' : ''}
                 </button>

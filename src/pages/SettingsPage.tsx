@@ -18,12 +18,12 @@ export function SettingsPage() {
           { label: 'Sign out', onClick: () => { logout(); navigate('/login') } },
         ]}
       />
-      <div className="w-full max-w-7xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
+      <main id="main-content" className="w-full max-w-7xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
         <SettingsPanel
           onSave={(data) => console.log('Saved:', data)}
           onCancel={() => console.log('Cancelled')}
         />
-      </div>
+      </main>
     </div>
   )
 }
