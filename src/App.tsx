@@ -11,6 +11,7 @@ import { SettingsPage } from './pages/SettingsPage'
 import { ProductSearchPage } from './pages/ProductSearchPage'
 import { MultiStepRegistrationPage } from './pages/MultiStepRegistrationPage'
 import { TeamDashboardPage } from './pages/TeamDashboardPage'
+import { KanbanBoardPage } from './pages/KanbanBoardPage'
 import { useUser } from './contexts/UserContext'
 
 function ProtectedRoute({ children }: { children: React.ReactNode }) {
@@ -55,6 +56,14 @@ function App() {
                     element={
                       <ProtectedRoute>
                         <TeamDashboardPage />
+                      </ProtectedRoute>
+                    }
+                  />
+                  <Route
+                    path="/board"
+                    element={
+                      <ProtectedRoute>
+                        <KanbanBoardPage />
                       </ProtectedRoute>
                     }
                   />

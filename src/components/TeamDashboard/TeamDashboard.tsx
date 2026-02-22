@@ -93,6 +93,9 @@ export function TeamDashboard({
             <Link to="/team" className="text-sm font-medium text-blue-600 dark:text-blue-400">
               Team
             </Link>
+            <Link to="/board" className="text-sm font-medium text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white">
+              Board
+            </Link>
             <Link to="/settings" className="text-sm font-medium text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white">
               Settings
             </Link>
