@@ -106,7 +106,7 @@ export function MultiStepRegistrationPage() {
         email: formData.email,
       })
       setIsSuccess(true)
-      setTimeout(() => navigate('/dashboard'), 1500)
+      setTimeout(() => navigate('/team'), 1500)
     } catch (err) {
       setSubmitError(err instanceof Error ? err.message : 'Registration failed')
     } finally {

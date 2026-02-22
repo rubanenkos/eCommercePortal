@@ -157,7 +157,7 @@ test.describe('Multi-step form', () => {
       await page.getByTestId('ms-accept-terms').check()
       await page.getByTestId('btn-submit').click()
       await expect(page.getByTestId('registration-success')).toBeVisible({ timeout: 5000 })
-      await page.waitForURL(/dashboard/, { timeout: 5000 })
+      await page.waitForURL(/\/team\b/, { timeout: 5000 })
     })
 
     test('submission error shows error message', async ({ page }) => {

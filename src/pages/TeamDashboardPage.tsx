@@ -1,4 +1,6 @@
+import { useNavigate } from 'react-router-dom'
 import { TeamDashboard } from '../components/TeamDashboard/TeamDashboard'
+import { useUser } from '../contexts/UserContext'
 import { useTasks } from '../contexts/TasksContext'
 import { useActivity } from '../contexts/ActivityContext'
 import { useTeam } from '../contexts/TeamContext'
@@ -23,9 +25,17 @@ const MOCK_MILESTONES: ProjectMilestone[] = [
 ]
 
 export function TeamDashboardPage() {
+  const navigate = useNavigate()
+  const { user, logout } = useUser()
   const { tasks } = useTasks()
   const { activity } = useActivity()
   const { members, addMember } = useTeam()
+
+  const handleLogout = () => {
+    logout()
+    navigate('/login')
+  }
+
   const handleInviteMember = () => {
     const name = `New Member ${members.length + 1}`
     addMember({
@@ -44,6 +54,17 @@ export function TeamDashboardPage() {
       activity={activity}
       tasks={tasks}
       milestones={MOCK_MILESTONES}
+      user={user ?? {
+        name: 'Test User',
+        avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Test',
+        email: 'test@example.com',
+      }}
+      userMenuItems={[
+        { label: 'Profile', href: '#' },
+        { label: 'Settings', href: '/settings' },
+        { divider: true },
+        { label: 'Sign out', onClick: handleLogout },
+      ]}
       quickActions={[
         { id: 'new-task', label: 'New Task', icon: 'add', variant: 'blue', onClick: () => {}, href: '/dashboard' },
         { id: 'new-project', label: 'New Project', icon: 'folder', variant: 'green', onClick: () => {} },

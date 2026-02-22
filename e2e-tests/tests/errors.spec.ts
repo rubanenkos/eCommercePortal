@@ -60,7 +60,9 @@ test.describe('Error Handling', () => {
       await page.getByTestId('login-email').fill(testUser.email)
       await page.getByTestId('login-password').fill(testUser.password)
       await page.getByTestId('login-submit').click()
-      await page.waitForURL(/dashboard/, { timeout: 10000 })
+      await page.waitForURL(/\/team\b/, { timeout: 10000 })
+      await page.goto('/dashboard')
+      await page.waitForURL(/\/dashboard\b/, { timeout: 10000 })
     })
 
     test('empty task title does not add task', async ({ page }) => {
@@ -86,7 +88,7 @@ test.describe('Error Handling', () => {
       await page.getByTestId('login-email').fill('test@example.com')
       await page.getByTestId('login-password').fill('TestPassword123!')
       await page.getByTestId('login-submit').click()
-      await expect(page).toHaveURL(/dashboard/)
+      await expect(page).toHaveURL(/\/team\b/)
     })
   })
 })

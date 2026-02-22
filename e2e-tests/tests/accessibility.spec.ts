@@ -17,7 +17,7 @@ test.describe('Accessibility', () => {
       await page.getByTestId('login-email').fill(testUser.email)
       await page.getByTestId('login-password').fill(testUser.password)
       await page.getByTestId('login-password').press('Enter')
-      await page.waitForURL(/dashboard/, { timeout: 10000 })
+      await page.waitForURL(/\/team\b/, { timeout: 10000 })
     })
 
     test('should open and close user menu with keyboard', async ({ page, testUser }) => {
@@ -25,7 +25,9 @@ test.describe('Accessibility', () => {
       await page.getByTestId('login-email').fill(testUser.email)
       await page.getByTestId('login-password').fill(testUser.password)
       await page.getByTestId('login-submit').click()
-      await page.waitForURL(/dashboard/, { timeout: 10000 })
+      await page.waitForURL(/\/team\b/, { timeout: 10000 })
+      await page.goto('/dashboard')
+      await page.waitForURL(/\/dashboard\b/, { timeout: 10000 })
 
       await page.getByRole('button', { name: /user menu/i }).focus()
       await page.keyboard.press('Enter')
@@ -40,7 +42,9 @@ test.describe('Accessibility', () => {
       await page.getByTestId('login-email').fill(testUser.email)
       await page.getByTestId('login-password').fill(testUser.password)
       await page.getByTestId('login-submit').click()
-      await page.waitForURL(/dashboard/, { timeout: 10000 })
+      await page.waitForURL(/\/team\b/, { timeout: 10000 })
+      await page.goto('/dashboard')
+      await page.waitForURL(/\/dashboard\b/, { timeout: 10000 })
 
       await page.getByTestId('new-task-input').click()
       await page.keyboard.press('Tab')
@@ -70,7 +74,9 @@ test.describe('Accessibility', () => {
       await page.getByTestId('login-email').fill(testUser.email)
       await page.getByTestId('login-password').fill(testUser.password)
       await page.getByTestId('login-submit').click()
-      await page.waitForURL(/dashboard/, { timeout: 10000 })
+      await page.waitForURL(/\/team\b/, { timeout: 10000 })
+      await page.goto('/dashboard')
+      await page.waitForURL(/\/dashboard\b/, { timeout: 10000 })
 
       await expect(page.getByRole('main')).toBeVisible()
       await expect(page.getByTestId('task-list')).toBeVisible()
@@ -83,7 +89,9 @@ test.describe('Accessibility', () => {
       await page.getByTestId('login-email').fill(testUser.email)
       await page.getByTestId('login-password').fill(testUser.password)
       await page.getByTestId('login-submit').click()
-      await page.waitForURL(/dashboard/, { timeout: 10000 })
+      await page.waitForURL(/\/team\b/, { timeout: 10000 })
+      await page.goto('/dashboard')
+      await page.waitForURL(/\/dashboard\b/, { timeout: 10000 })
 
       const firstCard = page.getByTestId('task-card').first()
       await expect(firstCard.getByRole('combobox', { name: /change status/i })).toBeVisible()

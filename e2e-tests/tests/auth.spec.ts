@@ -12,15 +12,15 @@ test.describe('Authentication', () => {
       await expect(page.getByTestId('register-submit')).toBeVisible()
     })
 
-    test('should register successfully and redirect to dashboard', async ({ page }) => {
+    test('should register successfully and redirect to team dashboard', async ({ page }) => {
       const uniqueEmail = `user-${Date.now()}@example.com`
       await page.goto('/register')
       await page.getByTestId('register-name').fill('New User')
       await page.getByTestId('register-email').fill(uniqueEmail)
       await page.getByTestId('register-password').fill('SecurePass123!')
       await page.getByTestId('register-submit').click()
-      await page.waitForURL(/dashboard/, { timeout: 10000 })
-      await expect(page.getByTestId('task-list')).toBeVisible()
+      await page.waitForURL(/\/team\b/, { timeout: 10000 })
+      await expect(page.getByRole('heading', { name: /team dashboard/i })).toBeVisible()
     })
 
     test('should show error when fields are empty', async ({ page }) => {
@@ -61,8 +61,8 @@ test.describe('Authentication', () => {
       await page.getByTestId('login-email').fill(testUser.email)
       await page.getByTestId('login-password').fill(testUser.password)
       await page.getByTestId('login-submit').click()
-      await page.waitForURL(/dashboard/, { timeout: 10000 })
-      await expect(page.getByTestId('task-list')).toBeVisible()
+      await page.waitForURL(/\/team\b/, { timeout: 10000 })
+      await expect(page.getByRole('heading', { name: /team dashboard/i })).toBeVisible()
     })
 
     test('should show error with invalid credentials', async ({ page }) => {
@@ -94,7 +94,7 @@ test.describe('Authentication', () => {
       await page.getByTestId('login-email').fill(testUser.email)
       await page.getByTestId('login-password').fill(testUser.password)
       await page.getByTestId('login-submit').click()
-      await page.waitForURL(/dashboard/, { timeout: 10000 })
+      await page.waitForURL(/\/team\b/, { timeout: 10000 })
 
       await page.getByRole('button', { name: /user menu/i }).click()
       await page.getByRole('menuitem', { name: /sign out/i }).click()
@@ -109,11 +109,11 @@ test.describe('Authentication', () => {
       await page.getByTestId('login-email').fill(testUser.email)
       await page.getByTestId('login-password').fill(testUser.password)
       await page.getByTestId('login-submit').click()
-      await page.waitForURL(/dashboard/, { timeout: 10000 })
+      await page.waitForURL(/\/team\b/, { timeout: 10000 })
 
       await page.reload()
-      await page.waitForURL(/dashboard/, { timeout: 10000 })
-      await expect(page.getByTestId('task-list')).toBeVisible()
+      await page.waitForURL(/\/team\b/, { timeout: 10000 })
+      await expect(page.getByRole('heading', { name: /team dashboard/i })).toBeVisible()
     })
 
     test('should redirect unauthenticated user to login', async ({ page }) => {
@@ -121,14 +121,14 @@ test.describe('Authentication', () => {
       await expect(page).toHaveURL(/login/)
     })
 
-    test('should redirect root to dashboard when authenticated', async ({ page, testUser }) => {
+    test('should redirect root to team when authenticated', async ({ page, testUser }) => {
       await page.goto('/login')
       await page.getByTestId('login-email').fill(testUser.email)
       await page.getByTestId('login-password').fill(testUser.password)
       await page.getByTestId('login-submit').click()
-      await page.waitForURL(/dashboard/, { timeout: 10000 })
+      await page.waitForURL(/\/team\b/, { timeout: 10000 })
       await page.goto('/')
-      await page.waitForURL(/dashboard/, { timeout: 10000 })
+      await page.waitForURL(/\/team\b/, { timeout: 10000 })
     })
   })
 })

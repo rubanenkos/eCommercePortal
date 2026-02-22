@@ -14,7 +14,7 @@ test.describe('Responsive Design', () => {
       await page.getByTestId('login-email').fill('test@example.com')
       await page.getByTestId('login-password').fill('TestPassword123!')
       await page.getByTestId('login-submit').click()
-      await expect(page).toHaveURL(/dashboard/)
+      await expect(page).toHaveURL(/\/team\b/)
     })
 
     test('dashboard should show mobile menu button', async ({ page, testUser }) => {
@@ -22,7 +22,9 @@ test.describe('Responsive Design', () => {
       await page.getByTestId('login-email').fill(testUser.email)
       await page.getByTestId('login-password').fill(testUser.password)
       await page.getByTestId('login-submit').click()
-      await expect(page).toHaveURL(/dashboard/)
+      await page.waitForURL(/\/team\b/, { timeout: 10000 })
+      await page.goto('/dashboard')
+      await expect(page).toHaveURL(/\/dashboard\b/)
 
       await expect(page.getByRole('button', { name: /open menu/i })).toBeVisible()
     })
@@ -32,7 +34,9 @@ test.describe('Responsive Design', () => {
       await page.getByTestId('login-email').fill(testUser.email)
       await page.getByTestId('login-password').fill(testUser.password)
       await page.getByTestId('login-submit').click()
-      await expect(page).toHaveURL(/dashboard/)
+      await page.waitForURL(/\/team\b/, { timeout: 10000 })
+      await page.goto('/dashboard')
+      await expect(page).toHaveURL(/\/dashboard\b/)
 
       await expect(page.getByTestId('task-list')).toBeVisible()
       await expect(page.getByTestId('task-card').first()).toBeVisible()
@@ -43,7 +47,9 @@ test.describe('Responsive Design', () => {
       await page.getByTestId('login-email').fill(testUser.email)
       await page.getByTestId('login-password').fill(testUser.password)
       await page.getByTestId('login-submit').click()
-      await expect(page).toHaveURL(/dashboard/)
+      await page.waitForURL(/\/team\b/, { timeout: 10000 })
+      await page.goto('/dashboard')
+      await expect(page).toHaveURL(/\/dashboard\b/)
 
       const taskTitle = `Mobile task ${Date.now()}`
       await page.getByTestId('new-task-input').fill(taskTitle)
@@ -68,7 +74,9 @@ test.describe('Responsive Design', () => {
       await page.getByTestId('login-email').fill(testUser.email)
       await page.getByTestId('login-password').fill(testUser.password)
       await page.getByTestId('login-submit').click()
-      await expect(page).toHaveURL(/dashboard/)
+      await page.waitForURL(/\/team\b/, { timeout: 10000 })
+      await page.goto('/dashboard')
+      await expect(page).toHaveURL(/\/dashboard\b/)
 
       await expect(page.getByTestId('task-list')).toBeVisible()
       const cards = page.getByTestId('task-card')
@@ -86,7 +94,9 @@ test.describe('Responsive Design', () => {
       await page.getByTestId('login-email').fill(testUser.email)
       await page.getByTestId('login-password').fill(testUser.password)
       await page.getByTestId('login-submit').click()
-      await expect(page).toHaveURL(/dashboard/)
+      await page.waitForURL(/\/team\b/, { timeout: 10000 })
+      await page.goto('/dashboard')
+      await expect(page).toHaveURL(/\/dashboard\b/)
 
       await expect(page.getByRole('navigation')).toBeVisible()
       await expect(page.getByRole('main')).toBeVisible()
@@ -98,7 +108,9 @@ test.describe('Responsive Design', () => {
       await page.getByTestId('login-email').fill(testUser.email)
       await page.getByTestId('login-password').fill(testUser.password)
       await page.getByTestId('login-submit').click()
-      await expect(page).toHaveURL(/dashboard/)
+      await page.waitForURL(/\/team\b/, { timeout: 10000 })
+      await page.goto('/dashboard')
+      await expect(page).toHaveURL(/\/dashboard\b/)
 
       await expect(page.getByRole('link', { name: /settings/i })).toBeVisible()
     })
@@ -111,7 +123,9 @@ test.describe('Responsive Design', () => {
       await page.getByTestId('login-email').fill(testUser.email)
       await page.getByTestId('login-password').fill(testUser.password)
       await page.getByTestId('login-submit').click()
-      await expect(page).toHaveURL(/dashboard/)
+      await page.waitForURL(/\/team\b/, { timeout: 10000 })
+      await page.goto('/dashboard')
+      await expect(page).toHaveURL(/\/dashboard\b/)
       await expect(page.getByTestId('task-list')).toBeVisible()
     })
 
@@ -121,7 +135,9 @@ test.describe('Responsive Design', () => {
       await page.getByTestId('login-email').fill(testUser.email)
       await page.getByTestId('login-password').fill(testUser.password)
       await page.getByTestId('login-submit').click()
-      await expect(page).toHaveURL(/dashboard/)
+      await page.waitForURL(/\/team\b/, { timeout: 10000 })
+      await page.goto('/dashboard')
+      await expect(page).toHaveURL(/\/dashboard\b/)
       await expect(page.getByTestId('task-list')).toBeVisible()
     })
   })

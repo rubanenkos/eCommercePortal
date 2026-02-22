@@ -23,7 +23,7 @@ export function LoginPage() {
         avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Test',
         email,
       })
-      navigate('/dashboard')
+      navigate('/team')
     } else {
       setError('Invalid email or password')
     }

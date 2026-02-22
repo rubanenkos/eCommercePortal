@@ -21,7 +21,7 @@ export const test = base.extend<{ authenticatedPage: void; testUser: AuthUser }>
     await page.getByLabel(/email/i).fill(testUser.email)
     await page.getByLabel(/password/i).fill(testUser.password)
     await page.getByRole('button', { name: /log in|sign in/i }).click()
-    await page.waitForURL(/dashboard|/)
+    await page.waitForURL(/\/team\b/, { timeout: 10000 })
     await use()
   },
 })
