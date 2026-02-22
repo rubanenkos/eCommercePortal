@@ -23,3 +23,9 @@ export type {
   UserDropdownUser,
   UserDropdownItem,
 } from './layout/UserDropdown'
+export { Dashboard } from './Dashboard/Dashboard'
+export { Sidebar } from './Dashboard/Sidebar'
+export { Header } from './Dashboard/Header'
+export { TaskCard } from './Dashboard/TaskCard'
+export { StatWidget } from './Dashboard/StatWidget'
+export { DarkModeToggle } from './Dashboard/DarkModeToggle'
