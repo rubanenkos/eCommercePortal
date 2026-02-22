@@ -5,6 +5,7 @@ import { TaskDashboardPage } from './pages/TaskDashboardPage'
 import { SettingsPage } from './pages/SettingsPage'
 import { ProductSearchPage } from './pages/ProductSearchPage'
 import { MultiStepRegistrationPage } from './pages/MultiStepRegistrationPage'
+import { TeamDashboardPage } from './pages/TeamDashboardPage'
 
 function ProtectedRoute({ children }: { children: React.ReactNode }) {
   const isAuth = sessionStorage.getItem('auth') === 'true'
@@ -38,6 +39,14 @@ function App() {
           }
         />
         <Route path="/products" element={<ProductSearchPage />} />
+        <Route
+          path="/team"
+          element={
+            <ProtectedRoute>
+              <TeamDashboardPage />
+            </ProtectedRoute>
+          }
+        />
         <Route path="/" element={<Navigate to="/dashboard" replace />} />
       </Routes>
     </BrowserRouter>
