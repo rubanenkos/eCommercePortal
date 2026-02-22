@@ -90,13 +90,6 @@ export function TaskDashboardPage() {
           </div>
         </>
       }
-      navItems={[
-        { label: 'Tasks', href: '/dashboard' },
-        { label: 'Team', href: '/team' },
-        { label: 'Board', href: '/board' },
-        { label: 'Feed', href: '/feed' },
-        { label: 'Settings', href: '/settings' },
-      ]}
       userMenuItems={[
         { label: 'Profile', href: '#' },
         { label: 'Settings', href: '/settings' },

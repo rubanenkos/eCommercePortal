@@ -1,15 +1,11 @@
 import { useState, useEffect } from 'react'
-import { Sidebar } from './Sidebar'
-import { Header } from './Header'
+import { AppHeader } from '../layout/AppHeader'
 import { TaskCard } from './TaskCard'
 import { StatWidget } from './StatWidget'
-import { DarkModeToggle } from './DarkModeToggle'
-import type { Task, DashboardNavItem, StatWidgetData } from '../types/dashboard'
-import type { NotificationItem } from './Header'
+import type { Task, StatWidgetData } from '../types/dashboard'
+import type { HeaderActionsNotification } from './HeaderActions'
 
 export interface DashboardProps {
-  /** Navigation items for sidebar */
-  navItems?: DashboardNavItem[]
   /** Tasks to display */
   tasks?: Task[]
   /** Statistics for widgets */
@@ -21,7 +17,7 @@ export interface DashboardProps {
     email?: string
   }
   /** Notifications for header */
-  notifications?: NotificationItem[]
+  notifications?: HeaderActionsNotification[]
   /** User menu items (e.g. Sign out) */
   userMenuItems?: { label?: string; href?: string; onClick?: () => void; divider?: boolean }[]
   /** Callback when task is deleted */
@@ -35,13 +31,6 @@ export interface DashboardProps {
   /** Header subtitle */
   subtitle?: string
 }
-
-const DEFAULT_NAV_ITEMS: DashboardNavItem[] = [
-  { label: 'Home', href: '#home' },
-  { label: 'Tasks', href: '#tasks' },
-  { label: 'Dashboard', href: '#dashboard' },
-  { label: 'Settings', href: '#settings' },
-]
 
 const DEFAULT_TASKS: Task[] = [
   {
@@ -84,7 +73,7 @@ const DEFAULT_STATS: StatWidgetData[] = [
   { label: 'Completed', value: 156, change: '+12% this month', changeType: 'positive' },
 ]
 
-const DEFAULT_NOTIFICATIONS: NotificationItem[] = [
+const DEFAULT_NOTIFICATIONS: HeaderActionsNotification[] = [
   { id: '1', title: 'Task completed', message: 'Review project proposal was marked as done', time: '2 min ago', read: false },
   { id: '2', title: 'New assignment', message: 'You were assigned to Fix login bug', time: '1 hour ago', read: false },
   { id: '3', title: 'Reminder', message: 'Team standup in 30 minutes', time: '3 hours ago', read: true },
@@ -115,7 +104,6 @@ function CheckIcon({ className }: { className?: string }) {
 }
 
 export function Dashboard({
-  navItems = DEFAULT_NAV_ITEMS,
   tasks = DEFAULT_TASKS,
   stats = DEFAULT_STATS,
   user,
@@ -127,7 +115,6 @@ export function Dashboard({
   title = 'Dashboard',
   subtitle = 'Manage your tasks and track progress',
 }: DashboardProps) {
-  const [sidebarOpen, setSidebarOpen] = useState(false)
   const [taskList, setTaskList] = useState<Task[]>(tasks)
 
   useEffect(() => {
@@ -144,32 +131,25 @@ export function Dashboard({
   const statIcons = [TasksIcon, ChartIcon, CheckIcon]
 
   return (
-    <div className="flex min-h-screen bg-gray-50 dark:bg-gray-950 transition-colors duration-300">
-      <Sidebar
-        navItems={navItems}
-        activeLink="#tasks"
-        logo={<span className="font-bold text-gray-900 dark:text-white">Tasks</span>}
-        isOpen={sidebarOpen}
-        onClose={() => setSidebarOpen(false)}
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-950 transition-colors duration-300">
+      <AppHeader
+        user={user}
+        notifications={notifications}
+        userMenuItems={userMenuItems ?? [
+          { label: 'Profile', href: '#' },
+          { label: 'Settings', href: '/settings' },
+          { divider: true },
+          { label: 'Sign out', onClick: () => {} },
+        ]}
       />
 
-      <div className="flex flex-1 flex-col min-w-0">
-        <Header
-          title={title}
-          subtitle={subtitle}
-          user={user}
-          notifications={notifications}
-          onMenuClick={() => setSidebarOpen(true)}
-          userMenuItems={userMenuItems ?? [
-            { label: 'Profile', href: '#' },
-            { label: 'Settings', href: '#' },
-            { divider: true },
-            { label: 'Sign out', onClick: () => {} },
-          ]}
-          actions={<DarkModeToggle />}
-        />
-
-        <main className="flex-1 p-4 lg:p-6" id="main-content">
+      <main className="flex-1 p-4 lg:p-6" id="main-content">
+          <header className="mb-6">
+            <h1 className="text-lg font-semibold text-gray-900 dark:text-white">{title}</h1>
+            {subtitle && (
+              <p className="text-sm text-gray-500 dark:text-gray-400 mt-0.5">{subtitle}</p>
+            )}
+          </header>
           {/* Stats */}
           <section
             className="mb-8 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3"
@@ -209,7 +189,6 @@ export function Dashboard({
             </div>
           </section>
         </main>
-      </div>
     </div>
   )
 }

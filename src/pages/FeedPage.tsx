@@ -1,8 +1,7 @@
 import { useState, useCallback } from 'react'
-import { Link } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { Feed } from '../components/feed'
-import { DarkModeToggle } from '../components/Dashboard/DarkModeToggle'
-import { NavIcons } from '../components/shared/NavIcons'
+import { AppHeader } from '../components/layout/AppHeader'
 import type { Post, FeedUser } from '../components/feed'
 import { useUser } from '../contexts/UserContext'
 
@@ -53,7 +52,8 @@ const INITIAL_POSTS: Post[] = [
 ]
 
 export function FeedPage() {
-  const { user } = useUser()
+  const navigate = useNavigate()
+  const { user, logout } = useUser()
   const currentUser: FeedUser = user
     ? { id: user.name, name: user.name, avatar: user.avatar, username: user.email?.split('@')[0] }
     : MOCK_CURRENT_USER
@@ -108,33 +108,15 @@ export function FeedPage() {
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-950">
-      <nav className="border-b border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 px-4 sm:px-6 lg:px-8">
-        <div className="flex h-14 items-center justify-between gap-6">
-          <div className="flex items-center gap-6">
-            <Link to="/dashboard" className="flex items-center gap-2 text-sm font-medium text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white">
-              <NavIcons.TaskIcon />
-              Tasks
-            </Link>
-            <Link to="/team" className="flex items-center gap-2 text-sm font-medium text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white">
-              <NavIcons.TeamIcon />
-              Team
-            </Link>
-            <Link to="/board" className="flex items-center gap-2 text-sm font-medium text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white">
-              <NavIcons.BoardIcon />
-              Board
-            </Link>
-            <Link to="/feed" className="flex items-center gap-2 text-sm font-medium text-blue-600 dark:text-blue-400">
-              <NavIcons.FeedIcon />
-              Feed
-            </Link>
-            <Link to="/settings" className="flex items-center gap-2 text-sm font-medium text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white">
-              <NavIcons.SettingsIcon />
-              Settings
-            </Link>
-          </div>
-          <DarkModeToggle />
-        </div>
-      </nav>
+      <AppHeader
+        user={user ?? { name: 'Test User', avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Test', email: 'test@example.com' }}
+        userMenuItems={[
+          { label: 'Profile', href: '#' },
+          { label: 'Settings', href: '/settings' },
+          { divider: true },
+          { label: 'Sign out', onClick: () => { logout(); navigate('/login') } },
+        ]}
+      />
       <Feed
         posts={posts}
         currentUser={currentUser}
