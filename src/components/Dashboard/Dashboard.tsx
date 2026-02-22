@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Sidebar } from './Sidebar'
 import { Header } from './Header'
 import { TaskCard } from './TaskCard'
@@ -22,6 +22,14 @@ export interface DashboardProps {
   }
   /** Notifications for header */
   notifications?: NotificationItem[]
+  /** User menu items (e.g. Sign out) */
+  userMenuItems?: { label?: string; href?: string; onClick?: () => void; divider?: boolean }[]
+  /** Callback when task is deleted */
+  onDeleteTask?: (taskId: string) => void
+  /** Callback when task status changes */
+  onTaskStatusChange?: (taskId: string, status: Task['status']) => void
+  /** Slot before task list (add task form, filters) */
+  beforeTaskList?: React.ReactNode
   /** Header title */
   title?: string
   /** Header subtitle */
@@ -112,16 +120,25 @@ export function Dashboard({
   stats = DEFAULT_STATS,
   user,
   notifications = DEFAULT_NOTIFICATIONS,
+  userMenuItems,
+  onDeleteTask,
+  onTaskStatusChange,
+  beforeTaskList,
   title = 'Dashboard',
   subtitle = 'Manage your tasks and track progress',
 }: DashboardProps) {
   const [sidebarOpen, setSidebarOpen] = useState(false)
   const [taskList, setTaskList] = useState<Task[]>(tasks)
 
+  useEffect(() => {
+    setTaskList(tasks)
+  }, [tasks])
+
   const handleTaskStatusChange = (taskId: string, status: Task['status']) => {
     setTaskList((prev) =>
       prev.map((t) => (t.id === taskId ? { ...t, status } : t))
     )
+    onTaskStatusChange?.(taskId, status)
   }
 
   const statIcons = [TasksIcon, ChartIcon, CheckIcon]
@@ -143,7 +160,7 @@ export function Dashboard({
           user={user}
           notifications={notifications}
           onMenuClick={() => setSidebarOpen(true)}
-          userMenuItems={[
+          userMenuItems={userMenuItems ?? [
             { label: 'Profile', href: '#' },
             { label: 'Settings', href: '#' },
             { divider: true },
@@ -172,19 +189,21 @@ export function Dashboard({
           </section>
 
           {/* Tasks */}
-          <section aria-labelledby="tasks-heading">
+          <section aria-labelledby="tasks-heading" data-testid="task-list">
             <h2
               id="tasks-heading"
               className="mb-4 text-lg font-semibold text-gray-900 dark:text-white"
             >
               Recent Tasks
             </h2>
+            {beforeTaskList}
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-3">
               {taskList.map((task) => (
                 <TaskCard
                   key={task.id}
                   {...task}
                   onStatusChange={handleTaskStatusChange}
+                  onDelete={onDeleteTask}
                 />
               ))}
             </div>

@@ -2,6 +2,7 @@ import type { Task } from '../types/dashboard'
 
 export interface TaskCardProps extends Task {
   onStatusChange?: (taskId: string, status: Task['status']) => void
+  onDelete?: (taskId: string) => void
 }
 
 /* WCAG AA: status/priority colors chosen for 4.5:1+ contrast on backgrounds */
@@ -25,11 +26,13 @@ export function TaskCard({
   priority,
   dueDate,
   onStatusChange,
+  onDelete,
 }: TaskCardProps) {
   return (
     <article
       className="rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 p-4 shadow-sm transition-all duration-300 hover:shadow-md focus-within:ring-2 focus-within:ring-blue-500 focus-within:ring-offset-2 dark:focus-within:ring-offset-gray-900"
       aria-labelledby={`task-title-${id}`}
+      data-testid="task-card"
     >
       <div className="flex items-start justify-between gap-3">
         <div className="min-w-0 flex-1">
@@ -72,11 +75,24 @@ export function TaskCard({
           <option value="done">Done</option>
         </select>
       </div>
-      <span
-        className={`mt-3 inline-block rounded-full px-2.5 py-0.5 text-xs font-medium ${statusStyles[status]}`}
-      >
-        {status.replace('_', ' ')}
-      </span>
+      <div className="mt-3 flex items-center justify-between gap-2">
+        <span
+          className={`inline-block rounded-full px-2.5 py-0.5 text-xs font-medium ${statusStyles[status]}`}
+        >
+          {status.replace('_', ' ')}
+        </span>
+        {onDelete && (
+          <button
+            type="button"
+            onClick={() => onDelete(id)}
+            aria-label={`Delete ${title}`}
+            data-testid="task-delete"
+            className="text-xs text-red-600 dark:text-red-400 hover:underline"
+          >
+            Delete
+          </button>
+        )}
+      </div>
     </article>
   )
 }
