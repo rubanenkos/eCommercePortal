@@ -17,6 +17,9 @@ export function KanbanBoardPage() {
             <Link to="/board" className="text-sm font-medium text-blue-600 dark:text-blue-400">
               Board
             </Link>
+            <Link to="/feed" className="text-sm font-medium text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white">
+              Feed
+            </Link>
             <Link to="/settings" className="text-sm font-medium text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white">
               Settings
             </Link>

@@ -95,6 +95,7 @@ export function TaskDashboardPage() {
         { label: 'Tasks', href: '/dashboard' },
         { label: 'Team', href: '/team' },
         { label: 'Board', href: '/board' },
+        { label: 'Feed', href: '/feed' },
         { label: 'Settings', href: '/settings' },
       ]}
       userMenuItems={[

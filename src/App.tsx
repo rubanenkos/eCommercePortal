@@ -12,6 +12,7 @@ import { ProductSearchPage } from './pages/ProductSearchPage'
 import { MultiStepRegistrationPage } from './pages/MultiStepRegistrationPage'
 import { TeamDashboardPage } from './pages/TeamDashboardPage'
 import { KanbanBoardPage } from './pages/KanbanBoardPage'
+import { FeedPage } from './pages/FeedPage'
 import { useUser } from './contexts/UserContext'
 
 function ProtectedRoute({ children }: { children: React.ReactNode }) {
@@ -64,6 +65,14 @@ function App() {
                     element={
                       <ProtectedRoute>
                         <KanbanBoardPage />
+                      </ProtectedRoute>
+                    }
+                  />
+                  <Route
+                    path="/feed"
+                    element={
+                      <ProtectedRoute>
+                        <FeedPage />
                       </ProtectedRoute>
                     }
                   />
