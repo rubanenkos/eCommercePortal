@@ -3,6 +3,7 @@ import { LoginPage } from './pages/LoginPage'
 import { RegisterPage } from './pages/RegisterPage'
 import { TaskDashboardPage } from './pages/TaskDashboardPage'
 import { SettingsPage } from './pages/SettingsPage'
+import { ProductSearchPage } from './pages/ProductSearchPage'
 
 function ProtectedRoute({ children }: { children: React.ReactNode }) {
   const isAuth = sessionStorage.getItem('auth') === 'true'
@@ -34,6 +35,7 @@ function App() {
             </ProtectedRoute>
           }
         />
+        <Route path="/products" element={<ProductSearchPage />} />
         <Route path="/" element={<Navigate to="/dashboard" replace />} />
       </Routes>
     </BrowserRouter>

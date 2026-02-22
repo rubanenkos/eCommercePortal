@@ -103,6 +103,7 @@ export function ProductCard({
     <article
       className="group relative flex flex-col bg-gray-900 rounded-xl border border-gray-800 overflow-hidden transition-all duration-300 hover:border-gray-600 hover:shadow-lg hover:shadow-gray-900/50 hover:-translate-y-1"
       aria-labelledby={`product-title-${title.replace(/\s+/g, '-')}`}
+      data-testid="product-card"
     >
       {/* Image container with hover zoom */}
       <div className="relative aspect-square overflow-hidden bg-gray-800">

@@ -16,7 +16,8 @@ e2e-tests/
 │   ├── navigation.spec.ts # Navigation tests
 │   ├── accessibility.spec.ts # Accessibility tests
 │   ├── responsive.spec.ts # Responsive design tests
-│   └── errors.spec.ts     # Error handling tests
+│   ├── errors.spec.ts     # Error handling tests
+│   └── product-search.spec.ts # Product search & filter tests
 ├── playwright.config.ts  # (at project root)
 └── README.md
 ```
@@ -57,6 +58,16 @@ e2e-tests/
 - Empty form validation
 - Protected route redirect
 - Task form validation
+
+### 7. Product Search (product-search.spec.ts)
+- Search with valid query
+- Search with no results (empty state)
+- Apply single/multiple filters
+- Clear all filters
+- Pagination navigation
+- Sort by different criteria
+- Error handling (query too long)
+- Responsive viewports (mobile, tablet, desktop)
 
 ## Prerequisites
 
