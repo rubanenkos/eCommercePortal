@@ -25,6 +25,8 @@ export interface NavbarProps {
   logo: React.ReactNode
   /** Navigation menu items */
   menuItems: NavItem[]
+  /** Currently active link href for highlighting */
+  activeLink?: string
   /** Search placeholder text */
   searchPlaceholder?: string
   /** Callback when search is submitted */
@@ -85,6 +87,7 @@ function HamburgerIcon({ isOpen }: { isOpen: boolean }) {
 export function Navbar({
   logo,
   menuItems,
+  activeLink,
   searchPlaceholder = 'Search...',
   onSearch,
   user,
@@ -125,15 +128,23 @@ export function Navbar({
 
           {/* Desktop menu items */}
           <div className="hidden md:flex md:items-center md:gap-8">
-            {menuItems.map((item) => (
-              <a
-                key={item.href}
-                href={item.href}
-                className="text-gray-300 hover:text-white font-medium transition-colors duration-200"
-              >
-                {item.label}
-              </a>
-            ))}
+            {menuItems.map((item) => {
+              const isActive = activeLink !== undefined && item.href === activeLink
+              return (
+                <a
+                  key={item.href}
+                  href={item.href}
+                  aria-current={isActive ? 'page' : undefined}
+                  className={`font-medium transition-colors duration-200 ${
+                    isActive
+                      ? 'text-blue-400'
+                      : 'text-gray-300 hover:text-white'
+                  }`}
+                >
+                  {item.label}
+                </a>
+              )
+            })}
           </div>
 
           {/* Search bar - desktop */}
@@ -199,6 +210,7 @@ export function Navbar({
         isOpen={isMobileMenuOpen}
         onClose={() => setIsMobileMenuOpen(false)}
         menuItems={menuItems}
+        activeLink={activeLink}
         searchPlaceholder={searchPlaceholder}
         searchQuery={searchQuery}
         onSearchQueryChange={setSearchQuery}

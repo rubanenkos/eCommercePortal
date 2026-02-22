@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import { ProductCard, Navbar } from '../components'
 
 const SAMPLE_PRODUCTS = [
@@ -61,18 +62,21 @@ const SAMPLE_PRODUCTS = [
 ]
 
 export function ProductCardDemo() {
+  const [searchQuery, setSearchQuery] = useState<string | null>(null)
+
   return (
     <div className="min-h-screen bg-gray-950">
       <Navbar
         logo={<span className="text-blue-400">Portal</span>}
         menuItems={[
-          { label: 'Home', href: '#' },
-          { label: 'Products', href: '#' },
-          { label: 'Categories', href: '#' },
-          { label: 'Deals', href: '#' },
+          { label: 'Home', href: '#home' },
+          { label: 'Products', href: '#products' },
+          { label: 'Categories', href: '#categories' },
+          { label: 'Deals', href: '#deals' },
         ]}
+        activeLink="#products"
         searchPlaceholder="Search products..."
-        onSearch={(query) => alert(`Searching for: ${query}`)}
+        onSearch={(query) => setSearchQuery(query || null)}
         user={{
           name: 'Alex Johnson',
           avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Alex',
@@ -87,6 +91,23 @@ export function ProductCardDemo() {
       />
 
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        {searchQuery ? (
+          <div className="mb-8 rounded-xl border border-gray-800 bg-gray-900/50 p-8 text-center">
+            <h2 className="text-xl font-semibold text-white mb-2">
+              Search results for &quot;{searchQuery}&quot;
+            </h2>
+            <p className="text-gray-400 mb-4">
+              Search functionality placeholder — connect your search API to display results here.
+            </p>
+            <button
+              type="button"
+              onClick={() => setSearchQuery(null)}
+              className="text-sm text-blue-400 hover:text-blue-300 transition-colors"
+            >
+              Clear search
+            </button>
+          </div>
+        ) : null}
         <h1 className="text-2xl sm:text-3xl font-bold text-white mb-2">
           Product Catalog
         </h1>

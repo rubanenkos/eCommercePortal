@@ -15,6 +15,8 @@ export interface MobileMenuProps {
   isOpen: boolean
   onClose: () => void
   menuItems: MobileMenuItem[]
+  /** Currently active link href for highlighting */
+  activeLink?: string
   searchPlaceholder?: string
   searchQuery: string
   onSearchQueryChange: (query: string) => void
@@ -45,6 +47,7 @@ export function MobileMenu({
   isOpen,
   onClose,
   menuItems,
+  activeLink,
   searchPlaceholder = 'Search...',
   searchQuery,
   onSearchQueryChange,
@@ -92,16 +95,24 @@ export function MobileMenu({
               </div>
             </form>
           )}
-          {menuItems.map((item) => (
-            <a
-              key={item.href}
-              href={item.href}
-              onClick={onClose}
-              className="block px-4 py-3 rounded-lg text-gray-300 hover:bg-gray-800 hover:text-white font-medium transition-colors"
-            >
-              {item.label}
-            </a>
-          ))}
+          {menuItems.map((item) => {
+            const isActive = activeLink !== undefined && item.href === activeLink
+            return (
+              <a
+                key={item.href}
+                href={item.href}
+                onClick={onClose}
+                aria-current={isActive ? 'page' : undefined}
+                className={`block px-4 py-3 rounded-lg font-medium transition-colors ${
+                  isActive
+                    ? 'bg-gray-800 text-blue-400'
+                    : 'text-gray-300 hover:bg-gray-800 hover:text-white'
+                }`}
+              >
+                {item.label}
+              </a>
+            )
+          })}
           {user && (
             <div className="pt-4 mt-4 border-t border-gray-800 flex items-center gap-3">
               <img
