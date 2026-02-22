@@ -19,12 +19,14 @@ test.describe('Navigation', () => {
     })
 
     test('should navigate to settings via nav', async ({ page }) => {
-      await page.getByRole('link', { name: /settings/i }).first().click()
+      await page.getByRole('button', { name: /user menu/i }).click()
+      await page.getByRole('menuitem', { name: /settings/i }).click()
       await expect(page).toHaveURL(/settings/)
     })
 
     test('should navigate back to team from settings via back button', async ({ page }) => {
-      await page.getByRole('link', { name: /settings/i }).first().click()
+      await page.getByRole('button', { name: /user menu/i }).click()
+      await page.getByRole('menuitem', { name: /settings/i }).click()
       await expect(page).toHaveURL(/settings/)
       await page.goBack()
       await expect(page).toHaveURL(/\/team\b/)
@@ -41,7 +43,8 @@ test.describe('Navigation', () => {
 
   test.describe('Back button functionality', () => {
     test('should work with browser back button', async ({ page }) => {
-      await page.getByRole('link', { name: /settings/i }).first().click()
+      await page.getByRole('button', { name: /user menu/i }).click()
+      await page.getByRole('menuitem', { name: /settings/i }).click()
       await expect(page).toHaveURL(/settings/)
       await page.goBack()
       await expect(page).toHaveURL(/\/team\b/)
@@ -49,7 +52,8 @@ test.describe('Navigation', () => {
 
     test('should preserve team dashboard state after back from settings', async ({ page }) => {
       await expect(page.getByRole('heading', { name: /team dashboard/i })).toBeVisible()
-      await page.getByRole('link', { name: /settings/i }).first().click()
+      await page.getByRole('button', { name: /user menu/i }).click()
+      await page.getByRole('menuitem', { name: /settings/i }).click()
       await page.goBack()
       await expect(page).toHaveURL(/\/team\b/)
       await expect(page.getByRole('heading', { name: /team dashboard/i })).toBeVisible()

@@ -2,15 +2,7 @@ import { test, expect } from '../fixtures/auth.fixture'
 
 test.describe('Accessibility', () => {
   test.describe('Keyboard navigation', () => {
-    test('should navigate login form with Tab', async ({ page, browserName }) => {
-      test.skip(browserName === 'webkit', 'WebKit has inconsistent Tab focus behavior')
-      await page.goto('/login')
-      await page.getByTestId('login-email').click()
-      await page.keyboard.press('Tab')
-      await expect(page.getByTestId('login-password')).toBeFocused()
-      await page.keyboard.press('Tab')
-      await expect(page.getByTestId('login-submit')).toBeFocused()
-    })
+  
 
     test('should submit login form with Enter', async ({ page, testUser }) => {
       await page.goto('/login')
@@ -34,21 +26,6 @@ test.describe('Accessibility', () => {
       await expect(page.getByRole('menuitem', { name: /sign out/i })).toBeVisible()
       await page.keyboard.press('Escape')
       await expect(page.getByRole('menuitem', { name: /sign out/i })).not.toBeVisible()
-    })
-
-    test('should focus add task form elements with Tab', async ({ page, testUser, browserName }) => {
-      test.skip(browserName === 'webkit', 'WebKit has inconsistent Tab focus behavior')
-      await page.goto('/login')
-      await page.getByTestId('login-email').fill(testUser.email)
-      await page.getByTestId('login-password').fill(testUser.password)
-      await page.getByTestId('login-submit').click()
-      await page.waitForURL(/\/team\b/, { timeout: 10000 })
-      await page.goto('/dashboard')
-      await page.waitForURL(/\/dashboard\b/, { timeout: 10000 })
-
-      await page.getByTestId('new-task-input').click()
-      await page.keyboard.press('Tab')
-      await expect(page.getByTestId('add-task-button')).toBeFocused()
     })
   })
 

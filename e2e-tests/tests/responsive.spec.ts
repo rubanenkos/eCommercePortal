@@ -103,7 +103,7 @@ test.describe('Responsive Design', () => {
       await expect(page.getByTestId('task-list')).toBeVisible()
     })
 
-    test('sidebar navigation should be visible', async ({ page, testUser }) => {
+    test('header navigation should be visible', async ({ page, testUser }) => {
       await page.goto('/login')
       await page.getByTestId('login-email').fill(testUser.email)
       await page.getByTestId('login-password').fill(testUser.password)
@@ -112,7 +112,7 @@ test.describe('Responsive Design', () => {
       await page.goto('/dashboard')
       await expect(page).toHaveURL(/\/dashboard\b/)
 
-      await expect(page.getByRole('link', { name: /settings/i })).toBeVisible()
+      await expect(page.getByRole('link', { name: /team/i })).toBeVisible()
     })
   })
 
